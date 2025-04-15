@@ -1,3 +1,9 @@
+resource "aws_flow_log" "vpc-flow-logs" {
+  log_destination = "log"
+  traffic_type    = "ALL"
+  vpc_id          = aws_vpc.main.id
+}
+
 resource "aws_vpc" "main" {
   cidr_block       = "10.0.0.0/16"
   instance_tenancy = "default"
@@ -163,4 +169,22 @@ resource "aws_route_table_association" "public_assoc_1a" {
 resource "aws_route_table_association" "public_assoc_1b" {
   subnet_id      = aws_subnet.public_1b.id
   route_table_id = aws_route_table.public_rt_1b.id
+}
+
+resource "aws_default_security_group" "default" {
+  vpc_id = aws_vpc.main.id
+
+-  ingress {
+-    protocol  = "-1"
+-    self      = true
+-    from_port = 0
+-    to_port   = 0
+-  }
+
+-  egress {
+-    from_port   = 0
+-    to_port     = 0
+-    protocol    = "-1"
+-    cidr_blocks = ["0.0.0.0/0"]
+-  }
 }
