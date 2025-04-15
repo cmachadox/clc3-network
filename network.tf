@@ -3,7 +3,7 @@ resource "aws_vpc" "main" {
   instance_tenancy = "default"
 
   tags = {
-    Name = "tf-vpc-clemente"
+    Name = "tf-vpc-clc13-clemente"
   }
 }
 
