@@ -1,5 +1,5 @@
 resource "aws_flow_log" "vpc-flow-logs" {
-  log_destination = "log"
+  log_destination = "/aws/vpc/flow-logs"
   traffic_type    = "ALL"
   vpc_id          = aws_vpc.main.id
 }
