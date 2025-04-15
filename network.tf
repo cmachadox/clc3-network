@@ -4,10 +4,6 @@ resource "aws_flow_log" "vpc-flow-logs" {
   vpc_id          = aws_vpc.main.id
 }
 
-resource "aws_vpc" "issue_vpc" {
-  cidr_block = "10.0.0.0/16"
-}
-
 resource "aws_default_security_group" "default" {
   vpc_id = aws_vpc.main.id
 
