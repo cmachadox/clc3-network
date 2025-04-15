@@ -12,28 +12,28 @@ env:
   AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
 
 jobs:
-#  Checkov:
-#    name: 'Check TF Vuls'
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Set up Python 3.8
-#        uses: actions/setup-python@v4
-#        with:
-#          python-version: 3.8
-#      - name: Test with Checkov
-#        id: checkov
-#        uses: bridgecrewio/checkov-action@master
-#        with:
-#          directory: .
-#          framework: terraform 
+  Checkov:
+    name: 'Check TF Vuls'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.8
+      - name: Test with Checkov
+        id: checkov
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: .
+          framework: terraform 
         #continue-on-error: true
           
   Apply:
     name: 'Apply Changes'
     runs-on: ubuntu-latest
     environment: aws_credentials
-    #needs: Checkov
+    needs: Checkov
 
     defaults:
       run:
