@@ -15,7 +15,6 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
-# EIPs
 resource "aws_eip" "nat_1a" {
   domain = "vpc"
 }
@@ -24,7 +23,6 @@ resource "aws_eip" "nat_1b" {
   domain = "vpc"
 }
 
-# Subnets públicas
 resource "aws_subnet" "public_1a" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = "10.0.100.0/24"
@@ -45,7 +43,7 @@ resource "aws_subnet" "public_1b" {
   }
 }
 
-# Subnets privadas
+
 resource "aws_subnet" "private_1a" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = "10.0.1.0/24"
@@ -66,7 +64,7 @@ resource "aws_subnet" "private_1b" {
   }
 }
 
-# NAT Gateways
+
 resource "aws_nat_gateway" "nat_1a" {
   allocation_id = aws_eip.nat_1a.id
   subnet_id     = aws_subnet.public_1a.id
@@ -89,7 +87,6 @@ resource "aws_nat_gateway" "nat_1b" {
   depends_on = [aws_internet_gateway.igw]
 }
 
-# Route Tables privadas
 resource "aws_route_table" "private_rt_1a" {
   vpc_id = aws_vpc.main.id
 
@@ -163,4 +160,21 @@ resource "aws_route_table_association" "public_assoc_1a" {
 resource "aws_route_table_association" "public_assoc_1b" {
   subnet_id      = aws_subnet.public_1b.id
   route_table_id = aws_route_table.public_rt_1b.id
+}
+
+# Configurando vpc flow log
+
+resource "aws_flow_log" "aula_mba_clc13" {
+  log_destination      = "arn:aws:s3:::clemente-machado-clc13-network-terraform-state"
+  log_destination_type = "s3"
+  traffic_type         = "ALL"
+  vpc_id               = aws_vpc.minha_vpc.id
+}
+
+resource "aws_default_security_group" "default" {
+  vpc_id = aws_vpc.minha_vpc.id
+  
+  tags = {
+    Name = "clemente-machado-clc13-sg"
+  }
 }
