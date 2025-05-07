@@ -168,11 +168,25 @@ resource "aws_flow_log" "aula_mba_clc13" {
   log_destination      = "arn:aws:s3:::clemente-machado-clc13-network-terraform-state"
   log_destination_type = "s3"
   traffic_type         = "ALL"
-  vpc_id               = aws_vpc.minha_vpc.id
+  vpc_id               = aws_vpc.main.id
 }
 
 resource "aws_default_security_group" "default" {
-  vpc_id = aws_vpc.minha_vpc.id
+  vpc_id = aws_vpc.main.id
+  
+  ingress {
+    protocol  = "-1"
+    self      = true
+    from_port = 0
+    to_port   = 0
+  }
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
   
   tags = {
     Name = "clemente-machado-clc13-sg"
