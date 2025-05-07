@@ -173,19 +173,23 @@ resource "aws_flow_log" "aula_mba_clc13" {
 
 resource "aws_default_security_group" "default" {
   vpc_id = aws_vpc.main.id
-  
+
+  # Remove todas as regras de entrada
   ingress {
-    protocol  = "-1"
-    self      = true
-    from_port = 0
-    to_port   = 0
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = []
   }
+
+  # Remove todas as regras de saída
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = []
   }
+
   tags = {
     Name = "clemente-machado-clc13-sg"
   }
