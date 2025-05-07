@@ -1,17 +1,3 @@
-resource "aws_flow_log" "vpc_flow_logs" {
-  log_destination      = aws_cloudwatch_log_group.vpc_flow_logs.arn
-  log_destination_type = "cloudwatch-logs"
-  traffic_type         = "ALL"
-  vpc_id               = aws_vpc.main.id
-  iam_role_arn         = aws_iam_role.vpc_flow_log_role.arn
-}
-
-resource "aws_default_security_group" "default" {
-  vpc_id = aws_vpc.main.id
-
-}
-
-
 resource "aws_vpc" "main" {
   cidr_block       = "10.0.0.0/16"
   instance_tenancy = "default"
